@@ -2,7 +2,7 @@
  * Name          : slider.js
  * @author       : Moritz Speidel (morasp)
  * Last modified : 11.04.2020
- * Revision      : 0.9.0
+ * Revision      : 0.9.1
  * 
  *
  */
@@ -40,6 +40,8 @@ var Slider =(function(container, parameters){
     var posX = thumbX;
     var posY = thumbY;
 
+    var onChangeHandler = function(e) {};
+
 
     function drawExternal () {
         context.fillStyle = "#dddddd";
@@ -63,6 +65,9 @@ var Slider =(function(container, parameters){
         pressed=1;
         lastY =  event.targetTouches[0].pageY;
         lastX = event.targetTouches[0].pageX;
+        onChangeHandler({
+            value: value()
+        });
 	}
 	function onTouchMove(event)
 	{
@@ -94,7 +99,10 @@ var Slider =(function(container, parameters){
 			context.clearRect(0, 0, canvas.width, canvas.height);
 			// Redraw object
 			drawExternal();
-			drawInternal();
+            drawInternal();
+            onChangeHandler({
+                value: value()
+            });
 		}
 	} 
 	function onTouchEnd(event) 
@@ -111,7 +119,10 @@ var Slider =(function(container, parameters){
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		// Redraw object
 		drawExternal();
-		drawInternal();
+        drawInternal();
+        onChangeHandler({
+            value: value()
+        });
 	}
 	/**
 	 * @desc Events for manage mouse
@@ -121,6 +132,9 @@ var Slider =(function(container, parameters){
         pressed=1;
         lastY = event.pageY;
         lastX = event.pageX;
+        onChangeHandler({
+            value: value()
+        });
 	}
 	function onMouseMove(event) 
 	{
@@ -151,7 +165,9 @@ var Slider =(function(container, parameters){
 			// Redraw object
 			drawExternal();
             drawInternal();
-            
+            onChangeHandler({
+                value: value()
+            });
 		}
 	}
 	function onMouseUp(event) 
@@ -168,8 +184,19 @@ var Slider =(function(container, parameters){
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		// Redraw object
 		drawExternal();
-		drawInternal();
+        drawInternal();
+        onChangeHandler({
+            value: value()
+        });
     }
+    function value(){
+        if(orientation == "vertical"){
+            return (-1*(posY-height)/height)*(maximum-minimum)+minimum;
+        }else{
+            return (posX/width)*(maximum-minimum) + minimum;
+        }
+    }
+
     if("ontouchstart" in document.documentElement)
 	{
 		canvas.addEventListener('touchstart', onTouchStart, false);
@@ -185,4 +212,13 @@ var Slider =(function(container, parameters){
     drawExternal();
     drawInternal();
 
+    this.getValue = function ()
+    {
+        return value();
+    };
+    this.on = function(event, handler){
+        if(event === "change"){
+            onChangeHandler = handler;
+        }
+    }
 });
