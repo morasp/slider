@@ -36,6 +36,7 @@ var slide = new Slider("slider", {
 The options are not neccesary, if you only want a simple vertical slider from 0 to 100.
 
 You can either get the current value of the slider with the getValue() function or with the change event:
+
 ```javascript
 var value = slider.getValue();
 
@@ -43,4 +44,3 @@ slider.on("change", (e)=>{
     console.log(e.value)
 });
 ```
-
