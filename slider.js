@@ -49,7 +49,7 @@ var Slider = (function (container, parameters) {
     }
     function drawInternal() {
         context.fillStyle = "#17a2b8";
-        if (orientation == "vertical") {
+        if (orientation === "vertical") {
             context.fillRect(0, posY - 10, width, 20);
         } else {
             context.fillRect(posX - 10, 0, 20, height);
