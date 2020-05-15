@@ -209,4 +209,7 @@ var Slider = (function (container, parameters) {
             onChangeHandler = handler;
         }
     };
+    this.rescale = function(){
+        
+    }
 });
